@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
+import route from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -21,3 +22,6 @@ mongoose.connect(URL)
     });
   })
   .catch(error => console.log('DB Connection Error:', error));
+
+
+  app.use("/api", route);
