@@ -4,17 +4,18 @@ import User from "../models/userModels.js";
 // Create a new user
 export const create = async (req, res) => {
     try {
+
         const userData = new User(req.body);
 
-        if (!userData) {
-            return res.status(404).json({ msg: "User data not found" });
+        if(!userData){
+            return res.status(404).json({msg: "User data not found"});
         }
 
-        const savedData = await userData.save();
-        res.status(200).json(savedData);
+        await userData.save();
+        res.status(200).json({msg: "User created successfully"});
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({error: error});
     }
 };
 
@@ -44,21 +45,34 @@ export const getOne = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const id = req.params.id;  // Get the ID from the request parameters
-        const updatedData = req.body;  // Get the new data from the request body
+        const id = req.params.id;
+        const userExists = await User.findById(id);
 
-        // Find the user by ID and update with new data
-        const user = await User.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true });
-
-        if (!user) {
-            return res.status(404).json({ msg: "User not found" });  // If user is not found, return 404
+        if (!userExists) {
+            return res.status(401).json({ msg: "User not found" });
         }
+        const updatedData = await User.findByIdAndUpdate(id, req.body, { new: true });
 
-        res.status(200).json(user);  // Return the updated user data with status 200
+        return res.status(200).json(updatedData);
     } catch (error) {
-        return res.status(500).json({ error: error.message });  // Handle any errors
+        return res.status(500).json({ error: error.message });
     }
 };
+
+export const deleteUser = async (req,res) => {
+    try {
+            const id = req.params.id;
+            const userExists =  await User.findById(id);
+            if(!userExists) {
+                    return res.status(404).json({ msg: 'user not exits'});
+            }
+            await User.findByIdAndDelete(id);
+
+            res.status(200).json({msg: 'user delete succesfully'});
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
 // export const viewByEmail = async (req, res) => {
 //     try {
 //         const email = req.params.email;  // Get the email from the request parameters
