@@ -1,10 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {Toaster} from "react-hot-toast";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Toaster } from "react-hot-toast";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import App from './App';
-// import reportWebVitals from './reportWebVitals';
+import User from "./components/getUser/User";
+import Add from "./components/addUser/Add";
+import Edit from "./components/updateUser/Edit";
 
+// Define route components directly in index.js
+function HomePage() {
+  return <User />;
+}
+
+function HomeCreatePage() {
+  return <Add />;
+}
+
+function HomeUpdatePage() {
+  return <Edit />;
+}
+
+// Main App component with routing setup
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/create" element={<HomeCreatePage />} />
+        <Route path="/edit/:id" element={<HomeUpdatePage />} />
+      </Routes>
+    </Router>
+  );
+}
+
+// Render the App component and Toaster for notifications
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -12,8 +42,3 @@ root.render(
     <Toaster />
   </React.StrictMode>
 );
-
-// // If you want to start measuring performance in your app, pass a function
-// // to log results (for example: reportWebVitals(console.log))
-// // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();

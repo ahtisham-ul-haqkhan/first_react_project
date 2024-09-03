@@ -30,8 +30,8 @@ export default function User() {
         <thead>
           <tr>
             <th>SNO</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Full Name</th>
+            {/* <th>Last Name</th> */}
             <th>EMAIL</th>
             <th>Password</th>
             <th>ACTION</th>
@@ -41,29 +41,21 @@ export default function User() {
           {
             users.map((user,index)=> {
               return (
-                <tr>
+                <tr key={user._id}>
                 <td>{index+1}</td>
-                <td>{user.fname}</td>
-                <td>{user.lname}</td>
+                <td>{user.fname}  {user.lname}</td>
+                {/* <td>{user.lname}</td> */}
                 <td>{user.email}</td>
                 <td>{user.password}</td>
                 <td>
-                  <button className="btn btn-primary btn-sm me-2">Edit</button>
-                  <button className="btn btn-danger btn-sm">Delete</button>
-                </td>
+                   <Link to={`/edit/`+user._id} className="btn btn-primary btn-sm me-2"><i className="fa-solid fa-pen-to-square"></i>Edit</Link>
+                    <button className="btn btn-danger btn-sm">Delete</button>
+                    </td>
               </tr>
               )
             })
           }
-            <tr>
-              {/* <td>{user.sno}</td>
-              <td>{user.email}</td>
-              <td>{user.userName}</td> */}
-              <td>
-                <button className="btn btn-primary btn-sm me-2">Edit</button>
-                <button className="btn btn-danger btn-sm">Delete</button>
-              </td>
-            </tr>
+           
         </tbody>
       </table>
     </div>
