@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import axios from "axios";
+import toast from 'react-hot-toast';
 
 export default function User() {
 
@@ -13,6 +14,19 @@ export default function User() {
 
     fetchData();
    }, [])
+
+
+   const deleteUser = async (userId) => {
+    try {
+      const response = await axios.delete(`http://localhost:7000/api/delete/${userId}`);
+      setUsers((prevUser) => prevUser.filter((user) => user._id !== userId));
+      // console.log(response);
+        toast.success(response.data.msg, {position: "top-right"})
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  }
+  
   return (
     <div>
    
@@ -49,7 +63,7 @@ export default function User() {
                 <td>{user.password}</td>
                 <td>
                    <Link to={`/edit/`+user._id} className="btn btn-primary btn-sm me-2"><i className="fa-solid fa-pen-to-square"></i>Edit</Link>
-                    <button className="btn btn-danger btn-sm">Delete</button>
+                    <button onClick={()=> deleteUser(user._id)} className="btn btn-danger btn-sm">Delete</button>
                     </td>
               </tr>
               )
